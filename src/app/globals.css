@@ -147,3 +147,16 @@
 .moveNimbus2 {
   animation-delay: 6s;
 }
+
+@keyframes nimbusBob {
+  0% { transform: translateY(0); }
+  20% { transform: translateY(-5px); }
+  50% { transform: translateY(0); }
+  80% { transform: translateY(5px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes nimbusMove1 {
+  0% { left: -50px; }
+  100% { left: calc(100vw + 50px); }
+}
