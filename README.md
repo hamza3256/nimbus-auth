@@ -4,6 +4,18 @@ A modern, production-ready authentication starter kit for Next.js 15+ projects. 
 
 ---
 
+## 🚀 Quick Start
+
+Scaffold a new project in seconds:
+
+```bash
+npx degit hamza3256/nimbus-auth my-app
+cd my-app
+npm install
+```
+
+---
+
 ## ✨ Features
 - **Next.js 15+ (App Router)** for best-in-class performance and developer experience
 - **Auth.js (NextAuth.js)** for secure, flexible authentication (credentials + OAuth ready)
@@ -21,31 +33,21 @@ A modern, production-ready authentication starter kit for Next.js 15+ projects. 
 
 ## 🚀 Getting Started (from a Clean Slate)
 
-1. **Clone this repo:**
-   ```bash
-   git clone <your-repo-url> my-app
-   cd my-app
-   ```
-2. **Install dependencies:**
-   ```bash
-   npm install
-   # or yarn or pnpm
-   ```
-3. **Set up your environment variables:**
+1. **Set up your environment variables:**
    - Copy `.env.example` to `.env.local` and fill in:
      - `DATABASE_URL` (PostgreSQL connection string)
      - `NEXTAUTH_URL` (your site URL)
      - `NEXTAUTH_SECRET` (generate with `openssl rand -base64 32`)
      - OAuth provider keys if needed (Google, GitHub, etc.)
-4. **Run database migrations:**
+2. **Run database migrations:**
    ```bash
    npm run db:migrate
    ```
-5. **Start the dev server:**
+3. **Start the dev server:**
    ```bash
    npm run dev
    ```
-6. **Open [http://localhost:3000](http://localhost:3000) and sign up!**
+4. **Open [http://localhost:3000](http://localhost:3000) and sign up!**
 
 ---
 
@@ -83,3 +85,8 @@ A modern, production-ready authentication starter kit for Next.js 15+ projects. 
 - `src/app/signin/page.tsx` & `src/app/signup/page.tsx` — Auth forms
 - `src/app/dashboard/page.tsx` — Protected dashboard example
 - `src/components/ui/password-input.tsx` — Password field with eye toggle
+
+---
+
+## 📝 License
+MIT — Use this as a base for your next project!

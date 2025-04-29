@@ -4,6 +4,7 @@ import Image from "next/image";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth/auth";
 import SignOutButton from "@/components/auth/signout-button";
+import { CopyTerminalCommand } from "@/components/ui/copy-terminal-command";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -15,7 +16,7 @@ export default async function Home() {
         <div className="text-center flex flex-col items-center">
           <Image
             src="/main-title.png"
-            alt="NimbusAuth Dragon Ball Title"
+            alt="NimbusAuth Main Title"
             width={360}
             height={80}
             priority
@@ -25,6 +26,7 @@ export default async function Home() {
             A secure authentication starter kit
           </p>
         </div>
+        <CopyTerminalCommand />
         {isLoggedIn ? (
           <div className="space-y-4 text-center">
             <p className="text-[#1C3A70] font-semibold">
