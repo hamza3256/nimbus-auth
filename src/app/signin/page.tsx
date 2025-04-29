@@ -26,6 +26,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
+import { PasswordInput } from "@/components/ui/password-input";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -105,9 +106,8 @@ export default function SignIn() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         placeholder="Enter your password"
-                        type="password"
                         disabled={isLoading}
                         {...field}
                       />
