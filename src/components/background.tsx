@@ -7,7 +7,7 @@ export function Background() {
       <div
         className="absolute inset-0"
         style={{
-          backgroundImage: "url('/background.png')",
+          backgroundImage: "url('https://res.cloudinary.com/dn20h4mis/image/upload/v1745927155/background_zhum8q.png')",
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}
@@ -15,41 +15,32 @@ export function Background() {
       
       {/* Container for Nimbus */}
       <div className="absolute inset-0" style={{ top: "10%" }}>
-        {/* First Nimbus */}
+        {/* Nimbus */}
         <div
           className="absolute"
           style={{
-            backgroundImage: "url('/nimbus.png')",
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            opacity: 0.8,
-            height: "50px",
-            width: "50px",
-            animation: "moveNimbus1 22s linear infinite",
-            filter: "blur(0.3px)",
-            transform: "translateZ(0)", // Force hardware acceleration
-            willChange: "transform", // Optimize for animations
+            top: 0,
+            left: 0,
+            animation: "nimbusMove1 22s linear infinite",
+            height: "auto",
+            width: "auto",
           }}
-        />
-        
-        {/* Second Nimbus */}
-        <div
-          className="absolute"
-          style={{
-            backgroundImage: "url('/nimbus.png')",
-            backgroundSize: "contain",
-            backgroundRepeat: "no-repeat",
-            backgroundPosition: "center",
-            opacity: 0.8,
-            height: "50px",
-            width: "50px",
-            animation: "moveNimbus2 22s linear infinite",
-            filter: "blur(0.3px)",
-            transform: "translateZ(0)", // Force hardware acceleration
-            willChange: "transform", // Optimize for animations
-          }}
-        />
+        >
+          <div
+            className="sm:h-[50px] sm:w-[50px] h-[32px] w-[32px]"
+            style={{
+              backgroundImage: "url('/nimbus.png')",
+              backgroundSize: "contain",
+              backgroundRepeat: "no-repeat",
+              backgroundPosition: "center",
+              opacity: 0.8,
+              animation: "nimbusBob 3.5s ease-in-out infinite",
+              filter: "blur(0.3px)",
+              transform: "translateZ(0)", // Force hardware acceleration
+              willChange: "transform", // Optimize for animations
+            }}
+          />
+        </div>
       </div>
     </div>
   );
