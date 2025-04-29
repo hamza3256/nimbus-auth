@@ -25,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
+import { PasswordInput } from "@/components/ui/password-input";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -134,9 +135,8 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         placeholder="Enter your password"
-                        type="password"
                         disabled={isLoading}
                         {...field}
                       />
@@ -152,9 +152,8 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input
+                      <PasswordInput
                         placeholder="Confirm your password"
-                        type="password"
                         disabled={isLoading}
                         {...field}
                       />
