@@ -1,16 +1,14 @@
-"use client";
+import Image from "next/image";
 
 export function Background() {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden">
-      {/* Static background */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url('https://res.cloudinary.com/dn20h4mis/image/upload/v1745927155/background_zhum8q.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
+    <div className="absolute inset-0 -z-10">
+      <Image
+        src="https://res.cloudinary.com/dn20h4mis/image/upload/v1745927155/background_zhum8q.png"
+        alt="Background"
+        fill
+        style={{ objectFit: "cover", objectPosition: "center" }}
+        priority
       />
       
       {/* Container for Nimbus */}
