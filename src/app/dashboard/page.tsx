@@ -19,10 +19,10 @@ export default async function Dashboard() {
   }
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen p-4 sm:p-8 bg-gradient-to-b from-white/50 via-[#FFD600]/10 to-white/40 flex flex-col">
       {/* Header Section */}
-      <div className="mb-8 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="mb-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-0 w-full">
+        <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 w-full">
           <Image
             src="/main-title.png"
             alt="NimbusAuth Dragon Ball Title"
@@ -31,13 +31,15 @@ export default async function Dashboard() {
             priority
             className="drop-shadow-lg"
           />
-          <p className="text-lg font-semibold text-[#1C3A70]">Dashboard</p>
+          <p className="text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-[#1C3A70] mt-2 sm:mt-0">Dashboard</p>
         </div>
-        <SignOutButton />
+        <div className="w-full sm:w-auto flex justify-center sm:justify-end">
+          <SignOutButton />
+        </div>
       </div>
 
       {/* Main Content */}
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2 w-full max-w-4xl mx-auto">
         {/* User Profile Card */}
         <Card>
           <CardHeader>
