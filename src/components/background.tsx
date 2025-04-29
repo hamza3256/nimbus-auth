@@ -4,13 +4,12 @@ export function Background() {
   return (
     <div className="absolute inset-0 -z-10">
       <Image
-        src="https://res.cloudinary.com/dn20h4mis/image/upload/v1745927155/background_zhum8q.png"
+        src="https://res.cloudinary.com/dn20h4mis/image/upload/e_enhance/q_auto/f_auto/background_zhum8q"
         alt="Background"
         fill
-        style={{ objectFit: "cover", objectPosition: "center" }}
+        style={{ objectFit: "cover", objectPosition: "78% center" }}
         priority
       />
-      
       {/* Container for Nimbus */}
       <div className="absolute inset-0" style={{ top: "10%" }}>
         {/* Nimbus */}
