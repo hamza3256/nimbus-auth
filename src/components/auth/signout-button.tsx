@@ -10,7 +10,7 @@ export default function SignOutButton() {
   return (
     <Button
       type="button"
-      className="w-full bg-[#FF9800] hover:bg-[#F57C00] text-white font-bold rounded-full shadow-md border-2 border-[#1C3A70] transition-colors duration-200"
+      className="bg-[#FF9800] hover:bg-[#F57C00] text-white font-bold rounded-full shadow-md border-2 border-[#1C3A70] transition-colors duration-200"
       disabled={isPending}
       onClick={() => {
         startTransition(async () => {
