@@ -120,3 +120,30 @@
     @apply bg-background text-foreground;
   }
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes moveNimbus1 {
+  0% {
+    transform: translateX(-50px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 50px));
+  }
+}
+
+@keyframes moveNimbus2 {
+  0% {
+    transform: translateX(-50px);
+  }
+  100% {
+    transform: translateX(calc(100vw + 50px));
+  }
+}
+
+/* Delay the second Nimbus to start when the first one ends */
+.moveNimbus2 {
+  animation-delay: 6s;
+}
