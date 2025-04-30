@@ -38,6 +38,8 @@ npm install
      - `DATABASE_URL` (PostgreSQL connection string)
      - `NEXTAUTH_URL` (your site URL)
      - `NEXTAUTH_SECRET` (generate with `openssl rand -base64 32`)
+     - `RESEND_API_KEY` (for email functionality)
+     - `RESEND_DOMAIN` (your verified domain in Resend)
      - OAuth provider keys if needed (Google, GitHub, etc.)
 2. **Run database migrations:**
    ```bash
@@ -48,6 +50,101 @@ npm install
    npm run dev
    ```
 4. **Open [http://localhost:3000](http://localhost:3000) and sign up!**
+
+## ✅ Features Checklist
+
+### 1. Project Structure & Modularity
+- [x] Clean, modular file structure
+- [x] Theme-agnostic UI (easy to swap out branding)
+- [x] Clear separation of concerns
+- [ ] Example theme implementation (DBZ theme)
+- [ ] Theme switching mechanism
+
+### 2. Dependencies & Tooling
+- [x] Next.js 15+ with App Router
+- [x] Auth.js (NextAuth.js) for authentication
+- [x] Drizzle ORM for database access
+- [x] PostgreSQL for data storage
+- [x] shadcn/ui for UI components
+- [x] Tailwind CSS for styling
+- [x] Zod for form validation
+- [ ] OAuth providers (Google, GitHub, etc.)
+- [ ] Rate limiting middleware
+
+### 3. Database & ORM
+- [x] Drizzle ORM schema with User, Account, Session tables
+- [x] Docker Compose for local PostgreSQL
+- [x] Production migration instructions
+- [x] Type-safe database queries
+- [ ] Database backup strategy
+- [ ] Database seeding for development
+
+### 4. Authentication
+- [x] Credentials provider (email/password)
+- [x] Email verification flow
+- [x] Password reset functionality
+- [x] Secure session handling
+- [x] CSRF protection
+- [x] Protected routes
+- [ ] OAuth providers integration
+- [ ] Social login buttons
+- [ ] Remember me functionality
+- [ ] Session timeout handling
+
+### 5. UI & UX
+- [x] Responsive sign-in and sign-up forms
+- [x] Password visibility toggle
+- [x] Form validation with error messages
+- [x] Toast notifications for feedback
+- [x] Mobile-first design
+- [x] Loading states
+- [ ] Dark mode support
+- [ ] Accessibility improvements (ARIA labels, keyboard navigation)
+- [ ] Form autocomplete support
+- [ ] Password strength indicator
+
+### 6. Security
+- [x] Password hashing with bcrypt
+- [x] Secure, httpOnly cookies
+- [x] CSRF protection
+- [ ] Rate limiting implementation
+- [x] Input validation and sanitization
+- [ ] Security headers (Helmet.js)
+- [ ] Content Security Policy
+- [ ] XSS protection
+- [ ] SQL injection prevention
+
+### 7. Email Functionality
+- [x] Email verification
+- [x] Password reset emails
+- [x] Resend integration
+- [x] Error handling
+- [ ] Email templates with proper HTML/CSS
+- [ ] Email queue for reliability
+- [ ] Email tracking and analytics
+- [ ] Custom email domain setup guide
+
+### 8. Development Experience
+- [x] Clear documentation
+- [x] TypeScript support
+- [x] Environment variable management
+- [x] Development and production configurations
+- [ ] Unit tests
+- [ ] Integration tests
+- [ ] E2E tests
+- [ ] CI/CD pipeline
+- [ ] Development scripts for common tasks
+- [ ] Code quality tools (ESLint, Prettier)
+
+### 9. Production Readiness
+- [ ] Performance optimization
+- [ ] Error monitoring (Sentry, etc.)
+- [ ] Analytics integration
+- [ ] SEO optimization
+- [ ] PWA support
+- [ ] Deployment guides for major platforms
+- [ ] Health check endpoints
+- [ ] Logging strategy
 
 ---
 
