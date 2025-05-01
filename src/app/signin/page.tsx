@@ -56,11 +56,7 @@ export default function SignIn() {
       });
 
       if (result?.error) {
-        if (result.error === "Please verify your email before signing in") {
-          toast.error("Please verify your email before signing in. Check your inbox for the verification link.");
-        } else {
-          toast.error(result.error);
-        }
+        toast.error("Invalid email or password");
         return;
       }
 
@@ -120,11 +116,6 @@ export default function SignIn() {
                   </FormItem>
                 )}
               />
-              <div className="flex justify-end mb-2">
-                <Link href="/forgot-password" className="text-xs text-primary hover:underline">
-                  Forgot Password?
-                </Link>
-              </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>

@@ -4,10 +4,6 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
-import { sendEmail } from "@/lib/email";
-import { randomBytes } from "crypto";
-import { addHours } from "date-fns";
-import { verificationTokens } from "@/db/schema";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -40,22 +36,6 @@ export async function POST(req: Request) {
       name,
       email,
       password: hashedPassword,
-    });
-
-    // Generate verification token
-    const token = randomBytes(32).toString("hex");
-    const expires = addHours(new Date(), 1);
-    await db.insert(verificationTokens).values({
-      identifier: email,
-      token,
-      expires,
-    });
-
-    const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
-    await sendEmail({
-      to: email,
-      subject: "Verify your email",
-      html: `<p>Click <a href='${verifyUrl}'>here</a> to verify your email. This link will expire in 1 hour.</p>`
     });
 
     return NextResponse.json(
