@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 
 const COMMAND = "npx degit hamza3256/nimbus-auth my-app";
 
@@ -18,7 +19,7 @@ export function CopyTerminalCommand() {
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2 bg-[#1C3A70] rounded-t-xl">
         <div className="flex items-center gap-2">
-          <img src="/icons/terminal.svg" alt="Terminal" className="w-4 h-4 opacity-90 invert" />
+          <Image src="/icons/terminal.svg" alt="Terminal" width={16} height={16} className="opacity-90 invert" />
           <span className="font-mono text-xs text-white font-semibold tracking-wide">Terminal</span>
         </div>
         <button
@@ -27,10 +28,12 @@ export function CopyTerminalCommand() {
           aria-label={copied ? "Copied!" : "Copy command"}
           type="button"
         >
-          <img
+          <Image
             src={copied ? "/icons/copied.svg" : "/icons/copy-icon.svg"}
             alt={copied ? "Copied!" : "Copy command"}
-            className={`w-5 h-5 ${copied ? 'filter-orange' : 'filter-blue'}`}
+            width={20}
+            height={20}
+            className={`${copied ? 'filter-orange' : 'filter-blue'}`}
           />
         </button>
       </div>
