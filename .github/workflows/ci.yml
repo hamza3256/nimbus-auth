@@ -30,7 +30,7 @@ jobs:
       run: npm ci
 
     - name: Type check
-      run: npm run typecheck || npm run check:types || true
+      run: npm run typecheck
 
     - name: Lint
       run: npm run lint || true
@@ -38,6 +38,6 @@ jobs:
     - name: Build
       run: npm run build
 
-    # Uncomment if you have tests
+    # Uncomment when tests are added
     # - name: Test
     #   run: npm test 

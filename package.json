@@ -5,15 +5,16 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "check": "concurrently --names \"lint,typecheck,format\" --prefix-colors \"yellow,blue,green\" \"next lint\" \"tsc --noEmit\" \"npm run format:check\"",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "check:types": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "shadcn:add": "npx shadcn@latest add"
+    "shadcn:add": "npx shadcn@latest add",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
   },
   "dependencies": {
     "@auth/core": "^0.34.2",
