@@ -7,7 +7,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       {children}
-      <Toaster />
+      <Toaster visibleToasts={1} />
     </SessionProvider>
   );
 }
