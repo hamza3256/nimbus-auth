@@ -157,7 +157,7 @@ export default function SignIn() {
                     <FormLabel>Email or Username</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="name@example.com or username"
+                        placeholder="you@example.com or username"
                         type="text"
                         disabled={isLoading}
                         {...field}

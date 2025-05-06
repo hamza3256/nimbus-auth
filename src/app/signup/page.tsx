@@ -118,7 +118,7 @@ export default function SignUp() {
                     <FormLabel>Name</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="John Doe"
+                        placeholder="Son Goku"
                         disabled={isLoading}
                         {...field}
                       />
@@ -152,7 +152,7 @@ export default function SignUp() {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="name@example.com"
+                        placeholder="you@example.com"
                         type="email"
                         disabled={isLoading}
                         {...field}
@@ -314,3 +314,4 @@ export default function SignUp() {
     </div>
   );
 }
+ 
