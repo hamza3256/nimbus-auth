@@ -41,4 +41,4 @@ export function Background() {
       </div>
     </div>
   );
-} 
+}

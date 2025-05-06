@@ -1,7 +1,11 @@
 import * as React from "react";
+import Image from "next/image";
 import { Input } from "@/components/ui/input";
 
-export function PasswordInput({ className, ...props }: React.ComponentProps<"input">) {
+export function PasswordInput({
+  className,
+  ...props
+}: React.ComponentProps<"input">) {
   const [show, setShow] = React.useState(false);
 
   return (
@@ -19,12 +23,13 @@ export function PasswordInput({ className, ...props }: React.ComponentProps<"inp
         onClick={() => setShow((v) => !v)}
         className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1C3A70] hover:text-[#FF9800] focus:outline-none"
       >
-        <img
+        <Image
           src={show ? "/icons/eye-open.svg" : "/icons/eye-closed.svg"}
           alt={show ? "Hide password" : "Show password"}
-          className="w-6 h-6"
+          width={24}
+          height={24}
         />
       </button>
     </div>
   );
-} 
+}

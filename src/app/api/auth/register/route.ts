@@ -4,6 +4,10 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import { z } from "zod";
+import { sendEmail } from "@/lib/email";
+import { randomBytes } from "crypto";
+import { addHours } from "date-fns";
+import { verificationTokens } from "@/db/schema";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -24,7 +28,7 @@ export async function POST(req: Request) {
     if (existingUser) {
       return NextResponse.json(
         { message: "User already exists" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -38,21 +42,37 @@ export async function POST(req: Request) {
       password: hashedPassword,
     });
 
+    // Generate verification token
+    const token = randomBytes(32).toString("hex");
+    const expires = addHours(new Date(), 1);
+    await db.insert(verificationTokens).values({
+      identifier: email,
+      token,
+      expires,
+    });
+
+    const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${token}`;
+    await sendEmail({
+      to: email,
+      subject: "Verify your email",
+      html: `<p>Click <a href='${verifyUrl}'>here</a> to verify your email. This link will expire in 1 hour.</p>`,
+    });
+
     return NextResponse.json(
       { message: "User created successfully" },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { message: error.errors[0].message },
-        { status: 400 }
+        { message: error.errors[0]?.message || "Invalid input" },
+        { status: 400 },
       );
     }
 
     return NextResponse.json(
       { message: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

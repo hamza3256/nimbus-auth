@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import * as z from "zod";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -56,14 +56,22 @@ export default function SignIn() {
       });
 
       if (result?.error) {
-        toast.error("Invalid email or password");
+        if (result.error === "Please verify your email before signing in") {
+          toast.error(
+            "Please verify your email before signing in. Check your inbox for the verification link.",
+          );
+        } else {
+          toast.error(result.error);
+        }
         return;
       }
 
       router.push("/dashboard");
       router.refresh();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Something went wrong");
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -116,6 +124,14 @@ export default function SignIn() {
                   </FormItem>
                 )}
               />
+              <div className="flex justify-end mb-2">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-primary hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
@@ -133,4 +149,4 @@ export default function SignIn() {
       </Card>
     </div>
   );
-} 
+}

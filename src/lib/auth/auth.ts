@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
-          return null;
+          throw new Error("Email and password are required");
         }
 
         const user = await db.query.users.findFirst({
@@ -31,16 +31,20 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user || !user.password) {
-          return null;
+          throw new Error("Invalid email or password");
+        }
+
+        if (!user.emailVerified) {
+          throw new Error("Please verify your email before signing in");
         }
 
         const isPasswordValid = await bcrypt.compare(
           credentials.password,
-          user.password
+          user.password,
         );
 
         if (!isPasswordValid) {
-          return null;
+          throw new Error("Invalid email or password");
         }
 
         return {
@@ -83,4 +87,4 @@ export const authOptions: NextAuthOptions = {
       };
     },
   },
-}; 
+};
