@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import AppleProvider from "next-auth/providers/apple";
+import GitHubProvider from "next-auth/providers/github";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
@@ -17,6 +18,10 @@ const configuredProviders: NextAuthOptions["providers"] = [
       password: { label: "Password", type: "password" },
     },
     async authorize(credentials) {
+      // TODO: Implement enterprise-grade rate limiting for failed login attempts here.
+      // This might involve tracking attempts in a database or a service like Redis/KV.
+      // Consider IP-based and/or user-identifier-based limiting.
+
       if (!credentials?.login || !credentials?.password) {
         throw new Error("Email/Username and password are required");
       }
@@ -82,6 +87,21 @@ if (
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
     }),
+  );
+}
+
+// Conditionally add GitHubProvider
+if (
+  process.env.GITHUB_AUTH_ENABLED !== "false" &&
+  process.env.GITHUB_CLIENT_ID &&
+  process.env.GITHUB_CLIENT_SECRET
+) {
+  configuredProviders.push(
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      allowDangerousEmailAccountLinking: true, // Recommended for trusted providers
+    })
   );
 }
 

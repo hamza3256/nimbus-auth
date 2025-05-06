@@ -263,6 +263,20 @@ export default function SignUp() {
                         Sign up with Facebook
                       </Button>
                     )}
+                    {oauthProviders.github && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("github", { callbackUrl: "/dashboard" });
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image src="/icons/social/github-logo.svg" alt="GitHub" width={20} height={20} className="mr-2" />
+                        Sign up with GitHub
+                      </Button>
+                    )}
                     {oauthProviders.apple && (
                       <Button
                         variant="outline"
