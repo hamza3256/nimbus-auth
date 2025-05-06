@@ -113,9 +113,12 @@ export default function SignIn() {
       if (data.remaining !== undefined) {
         toast.info(`You have ${data.remaining} resend attempts remaining.`);
       }
-    } catch (error: any) {
-      toast.error("Failed to resend verification email");
-      console.error(error);
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to resend verification email",
+      );
     } finally {
       setIsResending(false);
     }
