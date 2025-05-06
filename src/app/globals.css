@@ -160,3 +160,30 @@
   0% { left: -50px; }
   100% { left: calc(100vw + 50px); }
 }
+
+@keyframes animatedGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-background {
+  background: linear-gradient(
+    -45deg,
+    oklch(0.25 0.05 260), /* Deep Blue/Purple */
+    oklch(0.30 0.07 280), /* Purple */
+    oklch(0.20 0.04 230), /* Darker Blue */
+    oklch(0.35 0.08 300)  /* Magenta/Purple */
+  );
+  background-size: 400% 400%;
+  animation: animatedGradient 25s ease infinite;
+  position: absolute;
+  inset: 0;
+  z-index: -20; /* Ensure it's behind everything, including the Nimbus's -z-10 parent */
+}

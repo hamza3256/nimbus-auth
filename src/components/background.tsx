@@ -1,17 +1,27 @@
-import Image from "next/image";
+// Removed Image import as it might not be needed if Nimbus is also removed for now
 
 export function Background() {
   return (
-    <div className="absolute inset-0 -z-10">
-      <Image
-        src="https://res.cloudinary.com/dn20h4mis/image/upload/e_enhance/q_auto/f_auto/background_zhum8q"
-        alt="Background"
-        fill
-        style={{ objectFit: "cover", objectPosition: "78% center" }}
-        priority
-      />
-      {/* Container for Nimbus */}
-      <div className="absolute inset-0" style={{ top: "10%" }}>
+    <div className="fixed inset-0 -z-20 overflow-hidden">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline // Essential for iOS autoplay
+        className="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto object-cover transform -translate-x-1/2 -translate-y-1/2"
+        poster="https://res.cloudinary.com/dn20h4mis/image/upload/e_enhance/q_auto/f_auto/background_zhum8q" // Fallback image
+      >
+        <source src="/background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      {/* 
+        If you want the Nimbus animation back, its container would need 
+        a z-index higher than the video's parent div (e.g., -z-10) 
+        and careful positioning. For now, it's removed for simplicity.
+      */}
+
+       {/* Container for Nimbus */}
+       <div className="absolute inset-0" style={{ top: "10%" }}>
         {/* Nimbus */}
         <div
           className="absolute"
