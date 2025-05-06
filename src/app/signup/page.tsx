@@ -273,7 +273,13 @@ export default function SignUp() {
                         }}
                         disabled={isLoading}
                       >
-                        <Image src="/icons/social/github-logo.svg" alt="GitHub" width={20} height={20} className="mr-2" />
+                        <Image
+                          src="/icons/social/github-logo.svg"
+                          alt="GitHub"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
                         Sign up with GitHub
                       </Button>
                     )}
@@ -314,4 +320,3 @@ export default function SignUp() {
     </div>
   );
 }
- 

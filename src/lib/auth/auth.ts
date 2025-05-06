@@ -101,7 +101,7 @@ if (
       clientId: process.env.GITHUB_CLIENT_ID,
       clientSecret: process.env.GITHUB_CLIENT_SECRET,
       allowDangerousEmailAccountLinking: true, // Recommended for trusted providers
-    })
+    }),
   );
 }
 
@@ -167,4 +167,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
- 

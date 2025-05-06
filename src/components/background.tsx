@@ -20,8 +20,8 @@ export function Background() {
         and careful positioning. For now, it's removed for simplicity.
       */}
 
-       {/* Container for Nimbus */}
-       <div className="absolute inset-0" style={{ top: "10%" }}>
+      {/* Container for Nimbus */}
+      <div className="absolute inset-0" style={{ top: "10%" }}>
         {/* Nimbus */}
         <div
           className="absolute"

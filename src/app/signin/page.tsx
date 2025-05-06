@@ -271,7 +271,13 @@ export default function SignIn() {
                         }}
                         disabled={isLoading}
                       >
-                        <Image src="/icons/social/github-logo.svg" alt="GitHub" width={20} height={20} className="mr-2" />
+                        <Image
+                          src="/icons/social/github-logo.svg"
+                          alt="GitHub"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
                         Sign in with GitHub
                       </Button>
                     )}
