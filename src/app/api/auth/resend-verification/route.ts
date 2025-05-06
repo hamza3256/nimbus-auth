@@ -31,7 +31,7 @@ export async function POST(req: Request) {
           message: `Too many verification requests. Please try again after ${resetTime}.`,
           rateLimitReset: rateLimitResult.reset,
         },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
     if (!user) {
       return NextResponse.json(
         { message: "No account found with this email" },
-        { status: 404 }
+        { status: 404 },
       );
     }
 
@@ -51,7 +51,7 @@ export async function POST(req: Request) {
     if (user.emailVerified) {
       return NextResponse.json(
         { message: "Email is already verified" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     // Generate new verification token
     const token = randomBytes(32).toString("hex");
     const expires = addHours(new Date(), 1);
-    
+
     await db.insert(verificationTokens).values({
       identifier: email,
       token,
@@ -96,14 +96,14 @@ export async function POST(req: Request) {
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         { message: error.errors[0]?.message || "Invalid input" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     console.error("Error resending verification email:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}

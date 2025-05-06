@@ -62,9 +62,7 @@ export default function SignIn() {
         if (result.error === "Please verify your email before signing in") {
           setResendEmail(values.email);
           setShowResendOption(true);
-          toast.error(
-            "Please verify your email before signing in."
-          );
+          toast.error("Please verify your email before signing in.");
         } else {
           toast.error(result.error);
         }
@@ -75,7 +73,7 @@ export default function SignIn() {
       router.refresh();
     } catch (error) {
       toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
+        error instanceof Error ? error.message : "Something went wrong",
       );
     } finally {
       setIsLoading(false);
@@ -84,9 +82,9 @@ export default function SignIn() {
 
   async function handleResendVerification() {
     if (!resendEmail) return;
-    
+
     setIsResending(true);
-    
+
     try {
       const response = await fetch("/api/auth/resend-verification", {
         method: "POST",
@@ -95,9 +93,9 @@ export default function SignIn() {
         },
         body: JSON.stringify({ email: resendEmail }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         if (response.status === 429) {
           // Rate limited
@@ -107,15 +105,17 @@ export default function SignIn() {
         }
         return;
       }
-      
-      toast.success("Verification email has been sent. Please check your inbox.");
-      
+
+      toast.success(
+        "Verification email has been sent. Please check your inbox.",
+      );
+
       if (data.remaining !== undefined) {
         toast.info(`You have ${data.remaining} resend attempts remaining.`);
       }
-      
-    } catch (error) {
+    } catch (error: any) {
       toast.error("Failed to resend verification email");
+      console.error(error);
     } finally {
       setIsResending(false);
     }
@@ -179,13 +179,13 @@ export default function SignIn() {
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
-              
+
               {showResendOption && (
                 <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <p className="text-sm text-yellow-800 mb-2">
                     Please verify your email before signing in.
                   </p>
-                  <Button 
+                  <Button
                     type="button"
                     variant="outline"
                     className="w-full text-sm h-9"
