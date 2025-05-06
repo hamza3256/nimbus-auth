@@ -1,8 +1,7 @@
 import { Config, defineConfig } from "drizzle-kit";
 import dotenv from "dotenv";
 
-const NODE_ENV = process.env.NODE_ENV;
-const path = NODE_ENV == "production" ? ".env.production" : ".env";
+const path = ".env";
 dotenv.config({ path });
 
 export default defineConfig({
