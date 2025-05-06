@@ -194,6 +194,66 @@ export default function SignUp() {
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Creating account..." : "Create Account"}
               </Button>
+
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">
+                    Or sign up with
+                  </span>
+                </div>
+              </div>
+
+              {isLoadingProviders && <p className="text-center text-sm text-muted-foreground">Loading sign up options...</p>}
+              {!isLoadingProviders && oauthProviders && Object.keys(oauthProviders).length > 0 && (
+                <div className="space-y-2">
+                  {oauthProviders.google && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        await signIn("google", { callbackUrl: "/dashboard" });
+                        // No need to setIsLoading(false) here as signIn will navigate away
+                      }}
+                      disabled={isLoading}
+                    >
+                      <Image src="/icons/social/google-logo.svg" alt="Google" width={20} height={20} className="mr-2" />
+                      Sign up with Google
+                    </Button>
+                  )}
+                  {oauthProviders.facebook && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        await signIn("facebook", { callbackUrl: "/dashboard" });
+                      }}
+                      disabled={isLoading}
+                    >
+                      <Image src="/icons/social/facebook-logo.svg" alt="Facebook" width={20} height={20} className="mr-2" />
+                      Sign up with Facebook
+                    </Button>
+                  )}
+                  {oauthProviders.apple && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        await signIn("apple", { callbackUrl: "/dashboard" });
+                      }}
+                      disabled={isLoading}
+                    >
+                      <Image src="/icons/social/apple-logo.svg" alt="Apple" width={20} height={20} className="mr-2" />
+                      Sign up with Apple
+                    </Button>
+                  )}
+                </div>
+              )}
             </form>
           </Form>
         </CardContent>

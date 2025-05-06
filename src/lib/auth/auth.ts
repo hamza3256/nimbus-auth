@@ -1,10 +1,108 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
+import AppleProvider from "next-auth/providers/apple";
 import { db } from "@/db";
 import { users } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, or } from "drizzle-orm";
 import bcrypt from "bcryptjs";
+
+const configuredProviders: NextAuthOptions['providers'] = [
+  CredentialsProvider({
+    name: "credentials",
+    credentials: {
+      login: { label: "Email or Username", type: "text" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      if (!credentials?.login || !credentials?.password) {
+        throw new Error("Email/Username and password are required");
+      }
+
+      const user = await db.query.users.findFirst({
+        where: or(
+          eq(users.email, credentials.login),
+          eq(users.username, credentials.login)
+        ),
+      });
+
+      if (!user || !user.password) {
+        throw new Error("Invalid credentials");
+      }
+
+      if (!user.emailVerified) {
+        throw new Error("Please verify your email before signing in");
+      }
+
+      const isPasswordValid = await bcrypt.compare(
+        credentials.password,
+        user.password,
+      );
+
+      if (!isPasswordValid) {
+        throw new Error("Invalid credentials");
+      }
+
+      return {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        image: user.image,
+        username: user.username,
+      };
+    },
+  }),
+];
+
+// Conditionally add GoogleProvider
+if (
+  (process.env.GOOGLE_AUTH_ENABLED !== 'false') && // Enabled if not explicitly 'false'
+  process.env.GOOGLE_CLIENT_ID && 
+  process.env.GOOGLE_CLIENT_SECRET
+) {
+  configuredProviders.push(
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    })
+  );
+}
+
+// Conditionally add FacebookProvider
+if (
+  (process.env.FACEBOOK_AUTH_ENABLED !== 'false') && // Enabled if not explicitly 'false'
+  process.env.FACEBOOK_CLIENT_ID && 
+  process.env.FACEBOOK_CLIENT_SECRET
+) {
+  configuredProviders.push(
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+    })
+  );
+}
+
+// TODO: Add AppleProvider
+// Conditionally add AppleProvider
+// Note: Apple's secret might be more complex (e.g., involving APPLE_TEAM_ID, APPLE_KEY_ID, APPLE_PRIVATE_KEY)
+// For simplicity, we'll check for APPLE_ID and APPLE_SECRET here.
+// Adjust the condition based on your specific Apple secret setup.
+if (
+  (process.env.APPLE_AUTH_ENABLED !== 'false') && // Enabled if not explicitly 'false'
+  process.env.APPLE_ID && 
+  process.env.APPLE_SECRET
+) {
+  configuredProviders.push(
+    AppleProvider({
+      clientId: process.env.APPLE_ID,
+      clientSecret: process.env.APPLE_SECRET,
+      // If you use the more complex JWT generation for Apple client secret, 
+      // you might need additional env vars and logic here or within the provider setup.
+    })
+  );
+}
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db),
@@ -14,48 +112,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/signin",
   },
-  providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email and password are required");
-        }
-
-        const user = await db.query.users.findFirst({
-          where: eq(users.email, credentials.email),
-        });
-
-        if (!user || !user.password) {
-          throw new Error("Invalid email or password");
-        }
-
-        if (!user.emailVerified) {
-          throw new Error("Please verify your email before signing in");
-        }
-
-        const isPasswordValid = await bcrypt.compare(
-          credentials.password,
-          user.password,
-        );
-
-        if (!isPasswordValid) {
-          throw new Error("Invalid email or password");
-        }
-
-        return {
-          id: user.id,
-          email: user.email,
-          name: user.name,
-          image: user.image,
-        };
-      },
-    }),
-  ],
+  providers: configuredProviders,
   callbacks: {
     async session({ token, session }) {
       if (token && session.user) {
