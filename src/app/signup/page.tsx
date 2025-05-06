@@ -26,10 +26,15 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
 import { PasswordInput } from "@/components/ui/password-input";
+import { signIn, LiteralUnion, ClientSafeProvider } from "next-auth/react";
+import Image from "next/image";
+import { useOAuthProviders } from "@/lib/auth/utils";
 
 const formSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
+    username: z.string().min(5, "Username must be at least 5 characters")
+      .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
@@ -42,11 +47,13 @@ const formSchema = z
 export default function SignUp() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { oauthProviders, isLoadingProviders } = useOAuthProviders();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
+      username: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -64,6 +71,7 @@ export default function SignUp() {
         },
         body: JSON.stringify({
           name: values.name,
+          username: values.username,
           email: values.email,
           password: values.password,
         }),
@@ -106,6 +114,23 @@ export default function SignUp() {
                     <FormControl>
                       <Input
                         placeholder="John Doe"
+                        disabled={isLoading}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="username"
                         disabled={isLoading}
                         {...field}
                       />

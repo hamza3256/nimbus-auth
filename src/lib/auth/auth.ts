@@ -63,13 +63,13 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture;
+        session.user.username = token.username; // Ensure username is passed to session
       }
-
       return session;
     },
     async jwt({ token, user }) {
       const dbUser = await db.query.users.findFirst({
-        where: eq(users.email, token.email!),
+        where: user?.id ? eq(users.id, user.id) : eq(users.email, token.email!),
       });
 
       if (!dbUser) {
@@ -84,7 +84,9 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
+        username: dbUser.username,
       };
     },
   },
 };
+ 

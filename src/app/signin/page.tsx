@@ -27,9 +27,11 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
 import { PasswordInput } from "@/components/ui/password-input";
+import Image from "next/image";
+import { useOAuthProviders } from "@/lib/auth/utils";
 
 const formSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  login: z.string().min(1, "Email or Username is required"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -39,28 +41,34 @@ export default function SignIn() {
   const [showResendOption, setShowResendOption] = useState(false);
   const [resendEmail, setResendEmail] = useState("");
   const [isResending, setIsResending] = useState(false);
+  const { oauthProviders, isLoadingProviders } = useOAuthProviders();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      login: "",
       password: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
+    setShowResendOption(false);
 
     try {
       const result = await signIn("credentials", {
-        email: values.email,
+        login: values.login,
         password: values.password,
         redirect: false,
       });
 
       if (result?.error) {
         if (result.error === "Please verify your email before signing in") {
-          setResendEmail(values.email);
+          if (values.login.includes('@')) {
+            setResendEmail(values.login);
+          } else {
+            setResendEmail("");
+          }
           setShowResendOption(true);
           toast.error("Please verify your email before signing in.");
         } else {
@@ -81,7 +89,10 @@ export default function SignIn() {
   }
 
   async function handleResendVerification() {
-    if (!resendEmail) return;
+    if (!resendEmail) {
+      toast.info("Please enter your email address to resend the verification link.");
+      return;
+    }
 
     setIsResending(true);
 
@@ -138,14 +149,14 @@ export default function SignIn() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="email"
+                name="login"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>Email or Username</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="name@example.com"
-                        type="email"
+                        placeholder="name@example.com or username"
+                        type="text"
                         disabled={isLoading}
                         {...field}
                       />
@@ -183,20 +194,85 @@ export default function SignIn() {
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
 
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-2 text-muted-foreground">
+                    Or continue with
+                  </span>
+                </div>
+              </div>
+
+              {isLoadingProviders && <p className="text-center text-sm text-muted-foreground">Loading login options...</p>}
+              {!isLoadingProviders && oauthProviders && Object.keys(oauthProviders).length > 0 && (
+                <div className="space-y-2">
+                  {oauthProviders.google && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        await signIn("google", { callbackUrl: "/dashboard" });
+                        setIsLoading(false); // May not be reached if redirected
+                      }}
+                      disabled={isLoading}
+                    >
+                      <Image src="/icons/social/google-logo.svg" alt="Google" width={20} height={20} className="mr-2" />
+                      Sign in with Google
+                    </Button>
+                  )}
+                  {oauthProviders.facebook && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        await signIn("facebook", { callbackUrl: "/dashboard" });
+                        setIsLoading(false); // May not be reached if redirected
+                      }}
+                      disabled={isLoading}
+                    >
+                      <Image src="/icons/social/facebook-logo.svg" alt="Facebook" width={20} height={20} className="mr-2" />
+                      Sign in with Facebook
+                    </Button>
+                  )}
+                  {oauthProviders.apple && (
+                    <Button
+                      variant="outline"
+                      className="w-full"
+                      onClick={async () => {
+                        setIsLoading(true);
+                        await signIn("apple", { callbackUrl: "/dashboard" });
+                        setIsLoading(false); // May not be reached if redirected
+                      }}
+                      disabled={isLoading}
+                    >
+                      <Image src="/icons/social/apple-logo.svg" alt="Apple" width={20} height={20} className="mr-2" />
+                      Sign in with Apple
+                    </Button>
+                  )}
+                </div>
+              )}
+
               {showResendOption && (
                 <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <p className="text-sm text-yellow-800 mb-2">
                     Please verify your email before signing in.
+                    {!resendEmail && showResendOption && " If you used a username, please try signing in with your email to resend the verification."}
                   </p>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="w-full text-sm h-9"
-                    onClick={handleResendVerification}
-                    disabled={isResending}
-                  >
-                    {isResending ? "Sending..." : "Resend Verification Email"}
-                  </Button>
+                  {resendEmail && showResendOption && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="w-full text-sm h-9"
+                      onClick={handleResendVerification}
+                      disabled={isResending}
+                    >
+                      {isResending ? "Sending..." : "Resend Verification Email"}
+                    </Button>
+                  )}
                 </div>
               )}
             </form>
