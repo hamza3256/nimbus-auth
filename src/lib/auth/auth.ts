@@ -9,7 +9,7 @@ import { users } from "@/db/schema";
 import { eq, or } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 
-const configuredProviders: NextAuthOptions['providers'] = [
+const configuredProviders: NextAuthOptions["providers"] = [
   CredentialsProvider({
     name: "credentials",
     credentials: {
@@ -24,7 +24,7 @@ const configuredProviders: NextAuthOptions['providers'] = [
       const user = await db.query.users.findFirst({
         where: or(
           eq(users.email, credentials.login),
-          eq(users.username, credentials.login)
+          eq(users.username, credentials.login),
         ),
       });
 
@@ -58,29 +58,29 @@ const configuredProviders: NextAuthOptions['providers'] = [
 
 // Conditionally add GoogleProvider
 if (
-  (process.env.GOOGLE_AUTH_ENABLED !== 'false') && // Enabled if not explicitly 'false'
-  process.env.GOOGLE_CLIENT_ID && 
+  process.env.GOOGLE_AUTH_ENABLED !== "false" && // Enabled if not explicitly 'false'
+  process.env.GOOGLE_CLIENT_ID &&
   process.env.GOOGLE_CLIENT_SECRET
 ) {
   configuredProviders.push(
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    })
+    }),
   );
 }
 
 // Conditionally add FacebookProvider
 if (
-  (process.env.FACEBOOK_AUTH_ENABLED !== 'false') && // Enabled if not explicitly 'false'
-  process.env.FACEBOOK_CLIENT_ID && 
+  process.env.FACEBOOK_AUTH_ENABLED !== "false" && // Enabled if not explicitly 'false'
+  process.env.FACEBOOK_CLIENT_ID &&
   process.env.FACEBOOK_CLIENT_SECRET
 ) {
   configuredProviders.push(
     FacebookProvider({
       clientId: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    })
+    }),
   );
 }
 
@@ -90,17 +90,17 @@ if (
 // For simplicity, we'll check for APPLE_ID and APPLE_SECRET here.
 // Adjust the condition based on your specific Apple secret setup.
 if (
-  (process.env.APPLE_AUTH_ENABLED !== 'false') && // Enabled if not explicitly 'false'
-  process.env.APPLE_ID && 
+  process.env.APPLE_AUTH_ENABLED !== "false" && // Enabled if not explicitly 'false'
+  process.env.APPLE_ID &&
   process.env.APPLE_SECRET
 ) {
   configuredProviders.push(
     AppleProvider({
       clientId: process.env.APPLE_ID,
       clientSecret: process.env.APPLE_SECRET,
-      // If you use the more complex JWT generation for Apple client secret, 
+      // If you use the more complex JWT generation for Apple client secret,
       // you might need additional env vars and logic here or within the provider setup.
-    })
+    }),
   );
 }
 
@@ -146,4 +146,3 @@ export const authOptions: NextAuthOptions = {
     },
   },
 };
- 

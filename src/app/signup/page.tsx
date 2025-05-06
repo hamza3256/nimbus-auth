@@ -33,8 +33,13 @@ import { useOAuthProviders } from "@/lib/auth/utils";
 const formSchema = z
   .object({
     name: z.string().min(2, "Name must be at least 2 characters"),
-    username: z.string().min(5, "Username must be at least 5 characters")
-      .regex(/^[a-zA-Z0-9_]+$/, "Username can only contain letters, numbers, and underscores"),
+    username: z
+      .string()
+      .min(5, "Username must be at least 5 characters")
+      .regex(
+        /^[a-zA-Z0-9_]+$/,
+        "Username can only contain letters, numbers, and underscores",
+      ),
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string(),
@@ -206,54 +211,80 @@ export default function SignUp() {
                 </div>
               </div>
 
-              {isLoadingProviders && <p className="text-center text-sm text-muted-foreground">Loading sign up options...</p>}
-              {!isLoadingProviders && oauthProviders && Object.keys(oauthProviders).length > 0 && (
-                <div className="space-y-2">
-                  {oauthProviders.google && (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={async () => {
-                        setIsLoading(true);
-                        await signIn("google", { callbackUrl: "/dashboard" });
-                        // No need to setIsLoading(false) here as signIn will navigate away
-                      }}
-                      disabled={isLoading}
-                    >
-                      <Image src="/icons/social/google-logo.svg" alt="Google" width={20} height={20} className="mr-2" />
-                      Sign up with Google
-                    </Button>
-                  )}
-                  {oauthProviders.facebook && (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={async () => {
-                        setIsLoading(true);
-                        await signIn("facebook", { callbackUrl: "/dashboard" });
-                      }}
-                      disabled={isLoading}
-                    >
-                      <Image src="/icons/social/facebook-logo.svg" alt="Facebook" width={20} height={20} className="mr-2" />
-                      Sign up with Facebook
-                    </Button>
-                  )}
-                  {oauthProviders.apple && (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={async () => {
-                        setIsLoading(true);
-                        await signIn("apple", { callbackUrl: "/dashboard" });
-                      }}
-                      disabled={isLoading}
-                    >
-                      <Image src="/icons/social/apple-logo.svg" alt="Apple" width={20} height={20} className="mr-2" />
-                      Sign up with Apple
-                    </Button>
-                  )}
-                </div>
+              {isLoadingProviders && (
+                <p className="text-center text-sm text-muted-foreground">
+                  Loading sign up options...
+                </p>
               )}
+              {!isLoadingProviders &&
+                oauthProviders &&
+                Object.keys(oauthProviders).length > 0 && (
+                  <div className="space-y-2">
+                    {oauthProviders.google && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("google", { callbackUrl: "/dashboard" });
+                          // No need to setIsLoading(false) here as signIn will navigate away
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image
+                          src="/icons/social/google-logo.svg"
+                          alt="Google"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
+                        Sign up with Google
+                      </Button>
+                    )}
+                    {oauthProviders.facebook && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("facebook", {
+                            callbackUrl: "/dashboard",
+                          });
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image
+                          src="/icons/social/facebook-logo.svg"
+                          alt="Facebook"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
+                        Sign up with Facebook
+                      </Button>
+                    )}
+                    {oauthProviders.apple && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("apple", { callbackUrl: "/dashboard" });
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image
+                          src="/icons/social/apple-logo.svg"
+                          alt="Apple"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
+                        Sign up with Apple
+                      </Button>
+                    )}
+                  </div>
+                )}
             </form>
           </Form>
         </CardContent>

@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getProviders, LiteralUnion, ClientSafeProvider } from "next-auth/react";
+import {
+  getProviders,
+  LiteralUnion,
+  ClientSafeProvider,
+} from "next-auth/react";
 import { BuiltInProviderType } from "next-auth/providers/index";
 
 export function useOAuthProviders() {
@@ -42,4 +46,4 @@ export function useOAuthProviders() {
   }, []);
 
   return { oauthProviders, isLoadingProviders: isLoading };
-} 
+}

@@ -64,7 +64,7 @@ export default function SignIn() {
 
       if (result?.error) {
         if (result.error === "Please verify your email before signing in") {
-          if (values.login.includes('@')) {
+          if (values.login.includes("@")) {
             setResendEmail(values.login);
           } else {
             setResendEmail("");
@@ -90,7 +90,9 @@ export default function SignIn() {
 
   async function handleResendVerification() {
     if (!resendEmail) {
-      toast.info("Please enter your email address to resend the verification link.");
+      toast.info(
+        "Please enter your email address to resend the verification link.",
+      );
       return;
     }
 
@@ -205,62 +207,90 @@ export default function SignIn() {
                 </div>
               </div>
 
-              {isLoadingProviders && <p className="text-center text-sm text-muted-foreground">Loading login options...</p>}
-              {!isLoadingProviders && oauthProviders && Object.keys(oauthProviders).length > 0 && (
-                <div className="space-y-2">
-                  {oauthProviders.google && (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={async () => {
-                        setIsLoading(true);
-                        await signIn("google", { callbackUrl: "/dashboard" });
-                        setIsLoading(false); // May not be reached if redirected
-                      }}
-                      disabled={isLoading}
-                    >
-                      <Image src="/icons/social/google-logo.svg" alt="Google" width={20} height={20} className="mr-2" />
-                      Sign in with Google
-                    </Button>
-                  )}
-                  {oauthProviders.facebook && (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={async () => {
-                        setIsLoading(true);
-                        await signIn("facebook", { callbackUrl: "/dashboard" });
-                        setIsLoading(false); // May not be reached if redirected
-                      }}
-                      disabled={isLoading}
-                    >
-                      <Image src="/icons/social/facebook-logo.svg" alt="Facebook" width={20} height={20} className="mr-2" />
-                      Sign in with Facebook
-                    </Button>
-                  )}
-                  {oauthProviders.apple && (
-                    <Button
-                      variant="outline"
-                      className="w-full"
-                      onClick={async () => {
-                        setIsLoading(true);
-                        await signIn("apple", { callbackUrl: "/dashboard" });
-                        setIsLoading(false); // May not be reached if redirected
-                      }}
-                      disabled={isLoading}
-                    >
-                      <Image src="/icons/social/apple-logo.svg" alt="Apple" width={20} height={20} className="mr-2" />
-                      Sign in with Apple
-                    </Button>
-                  )}
-                </div>
+              {isLoadingProviders && (
+                <p className="text-center text-sm text-muted-foreground">
+                  Loading login options...
+                </p>
               )}
+              {!isLoadingProviders &&
+                oauthProviders &&
+                Object.keys(oauthProviders).length > 0 && (
+                  <div className="space-y-2">
+                    {oauthProviders.google && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("google", { callbackUrl: "/dashboard" });
+                          setIsLoading(false); // May not be reached if redirected
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image
+                          src="/icons/social/google-logo.svg"
+                          alt="Google"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
+                        Sign in with Google
+                      </Button>
+                    )}
+                    {oauthProviders.facebook && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("facebook", {
+                            callbackUrl: "/dashboard",
+                          });
+                          setIsLoading(false); // May not be reached if redirected
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image
+                          src="/icons/social/facebook-logo.svg"
+                          alt="Facebook"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
+                        Sign in with Facebook
+                      </Button>
+                    )}
+                    {oauthProviders.apple && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("apple", { callbackUrl: "/dashboard" });
+                          setIsLoading(false); // May not be reached if redirected
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image
+                          src="/icons/social/apple-logo.svg"
+                          alt="Apple"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
+                        Sign in with Apple
+                      </Button>
+                    )}
+                  </div>
+                )}
 
               {showResendOption && (
                 <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                   <p className="text-sm text-yellow-800 mb-2">
                     Please verify your email before signing in.
-                    {!resendEmail && showResendOption && " If you used a username, please try signing in with your email to resend the verification."}
+                    {!resendEmail &&
+                      showResendOption &&
+                      " If you used a username, please try signing in with your email to resend the verification."}
                   </p>
                   {resendEmail && showResendOption && (
                     <Button
