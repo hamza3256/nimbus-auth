@@ -36,6 +36,9 @@ const formSchema = z.object({
 export default function SignIn() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [showResendOption, setShowResendOption] = useState(false);
+  const [resendEmail, setResendEmail] = useState("");
+  const [isResending, setIsResending] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,9 +60,9 @@ export default function SignIn() {
 
       if (result?.error) {
         if (result.error === "Please verify your email before signing in") {
-          toast.error(
-            "Please verify your email before signing in. Check your inbox for the verification link.",
-          );
+          setResendEmail(values.email);
+          setShowResendOption(true);
+          toast.error("Please verify your email before signing in.");
         } else {
           toast.error(result.error);
         }
@@ -74,6 +77,50 @@ export default function SignIn() {
       );
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function handleResendVerification() {
+    if (!resendEmail) return;
+
+    setIsResending(true);
+
+    try {
+      const response = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: resendEmail }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        if (response.status === 429) {
+          // Rate limited
+          toast.error(data.message);
+        } else {
+          toast.error(data.message || "Failed to resend verification email");
+        }
+        return;
+      }
+
+      toast.success(
+        "Verification email has been sent. Please check your inbox.",
+      );
+
+      if (data.remaining !== undefined) {
+        toast.info(`You have ${data.remaining} resend attempts remaining.`);
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to resend verification email",
+      );
+    } finally {
+      setIsResending(false);
     }
   }
 
@@ -135,6 +182,23 @@ export default function SignIn() {
               <Button type="submit" className="w-full" disabled={isLoading}>
                 {isLoading ? "Signing in..." : "Sign In"}
               </Button>
+
+              {showResendOption && (
+                <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                  <p className="text-sm text-yellow-800 mb-2">
+                    Please verify your email before signing in.
+                  </p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full text-sm h-9"
+                    onClick={handleResendVerification}
+                    disabled={isResending}
+                  >
+                    {isResending ? "Sending..." : "Resend Verification Email"}
+                  </Button>
+                </div>
+              )}
             </form>
           </Form>
         </CardContent>
