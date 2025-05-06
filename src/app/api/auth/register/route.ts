@@ -11,6 +11,13 @@ import { verificationTokens } from "@/db/schema";
 
 const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
+  username: z
+    .string()
+    .min(3, "Username must be at least 3 characters")
+    .regex(
+      /^[a-zA-Z0-9_]+$/,
+      "Username can only contain letters, numbers, and underscores",
+    ),
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
@@ -18,16 +25,27 @@ const registerSchema = z.object({
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, password } = registerSchema.parse(body);
+    const { name, username, email, password } = registerSchema.parse(body);
 
-    // Check if user already exists
-    const existingUser = await db.query.users.findFirst({
+    // Check if email or username already exists
+    const existingUserByEmail = await db.query.users.findFirst({
       where: eq(users.email, email),
     });
 
-    if (existingUser) {
+    if (existingUserByEmail) {
       return NextResponse.json(
-        { message: "User already exists" },
+        { message: "Email already in use" },
+        { status: 400 },
+      );
+    }
+
+    const existingUserByUsername = await db.query.users.findFirst({
+      where: eq(users.username, username),
+    });
+
+    if (existingUserByUsername) {
+      return NextResponse.json(
+        { message: "Username already taken" },
         { status: 400 },
       );
     }
@@ -38,6 +56,7 @@ export async function POST(req: Request) {
     // Create user
     await db.insert(users).values({
       name,
+      username,
       email,
       password: hashedPassword,
     });
