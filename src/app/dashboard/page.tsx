@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function Dashboard() {
   const session = await getServerSession(authOptions);
@@ -44,19 +45,59 @@ export default async function Dashboard() {
       <div className="grid gap-6 md:grid-cols-2 w-full max-w-4xl mx-auto">
         {/* User Profile Card */}
         <Card>
-          <CardHeader>
-            <CardTitle>Profile Information</CardTitle>
-            <CardDescription>Your account details</CardDescription>
+          <CardHeader className="flex flex-row items-center gap-4">
+            {session.user.image && (
+              <Avatar className="h-16 w-16">
+                <AvatarImage
+                  src={session.user.image}
+                  alt={session.user.name || "User avatar"}
+                />
+                <AvatarFallback>
+                  {session.user.name
+                    ?.split(" ")
+                    .map((n) => n[0])
+                    .join("")
+                    .toUpperCase() || "U"}
+                </AvatarFallback>
+              </Avatar>
+            )}
+            <div>
+              <CardTitle className="text-2xl">
+                {session.user.name || "Welcome!"}
+              </CardTitle>
+              <CardDescription>Your profile details are below.</CardDescription>
+            </div>
           </CardHeader>
-          <CardContent className="space-y-2">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Email</p>
-              <p className="text-[#1C3A70]">{session.user.email}</p>
+          <CardContent className="space-y-4 pt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Full Name
+                </p>
+                <p className="text-lg font-semibold text-[#1C3A70] truncate">
+                  {session.user.name || "Not provided"}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Email Address
+                </p>
+                <p className="text-lg font-semibold text-[#1C3A70] truncate">
+                  {session.user.email}
+                </p>
+              </div>
+              {session.user.username && (
+                <div>
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    Username
+                  </p>
+                  <p className="text-lg font-semibold text-[#1C3A70] truncate">
+                    {session.user.username}
+                  </p>
+                </div>
+              )}
             </div>
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">Name</p>
-              <p className="text-[#1C3A70]">{session.user.name || "Not set"}</p>
-            </div>
+            {/* You can add more profile details or links here */}
           </CardContent>
         </Card>
 

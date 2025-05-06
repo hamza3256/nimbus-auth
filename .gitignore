@@ -42,6 +42,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/.cursor
+# Drizzle Kit cache/state
+.drizzle/
 
-.drizzle
+/.cursor

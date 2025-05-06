@@ -157,7 +157,7 @@ export default function SignIn() {
                     <FormLabel>Email or Username</FormLabel>
                     <FormControl>
                       <Input
-                        placeholder="name@example.com or username"
+                        placeholder="you@example.com or username"
                         type="text"
                         disabled={isLoading}
                         {...field}
@@ -258,6 +258,27 @@ export default function SignIn() {
                           className="mr-2"
                         />
                         Sign in with Facebook
+                      </Button>
+                    )}
+                    {oauthProviders.github && (
+                      <Button
+                        variant="outline"
+                        className="w-full"
+                        onClick={async () => {
+                          setIsLoading(true);
+                          await signIn("github", { callbackUrl: "/dashboard" });
+                          setIsLoading(false); // May not be reached
+                        }}
+                        disabled={isLoading}
+                      >
+                        <Image
+                          src="/icons/social/github-logo.svg"
+                          alt="GitHub"
+                          width={20}
+                          height={20}
+                          className="mr-2"
+                        />
+                        Sign in with GitHub
                       </Button>
                     )}
                     {oauthProviders.apple && (

@@ -5,7 +5,6 @@ const RESEND_DOMAIN =
   "NimbusAuth <" +
   (process.env.RESEND_DOMAIN || "no-reply@nimbusauth.com") +
   ">";
-console.log("RESEND_DOMAIN", RESEND_DOMAIN);
 
 if (!RESEND_API_KEY) {
   throw new Error("RESEND_API_KEY is not set in environment variables");
