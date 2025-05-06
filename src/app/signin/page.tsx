@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn, LiteralUnion, ClientSafeProvider } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

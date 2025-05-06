@@ -26,7 +26,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
 import { PasswordInput } from "@/components/ui/password-input";
-import { signIn, LiteralUnion, ClientSafeProvider } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Image from "next/image";
 import { useOAuthProviders } from "@/lib/auth/utils";
 
