@@ -42,7 +42,7 @@ export default function ForgotPassword() {
               type="email"
               placeholder="Enter your email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               required
               disabled={isLoading}
             />
@@ -54,4 +54,4 @@ export default function ForgotPassword() {
       </Card>
     </div>
   );
-} 
+}

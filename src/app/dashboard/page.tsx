@@ -31,7 +31,9 @@ export default async function Dashboard() {
             priority
             className="drop-shadow-lg"
           />
-          <p className="text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-[#1C3A70] mt-2 sm:mt-0">Dashboard</p>
+          <p className="text-xl sm:text-2xl font-extrabold uppercase tracking-wide text-[#1C3A70] mt-2 sm:mt-0">
+            Dashboard
+          </p>
         </div>
         <div className="w-full sm:w-auto flex justify-center sm:justify-end">
           <SignOutButton />
@@ -68,13 +70,13 @@ export default async function Dashboard() {
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground">
-              This is an example of a protected route in Next.js. You can only see this
-              content if you are authenticated. The session is checked server-side
-              using getServerSession.
+              This is an example of a protected route in Next.js. You can only
+              see this content if you are authenticated. The session is checked
+              server-side using getServerSession.
             </p>
           </CardContent>
         </Card>
       </div>
     </div>
   );
-} 
+}

@@ -12,10 +12,14 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Email is required" }, { status: 400 });
   }
 
-  const user = await db.query.users.findFirst({ where: eq(users.email, email) });
+  const user = await db.query.users.findFirst({
+    where: eq(users.email, email),
+  });
   if (!user) {
     // For security, do not reveal if user exists
-    return NextResponse.json({ message: "If that email exists, a reset link has been sent." });
+    return NextResponse.json({
+      message: "If that email exists, a reset link has been sent.",
+    });
   }
 
   const token = randomBytes(32).toString("hex");
@@ -30,8 +34,10 @@ export async function POST(req: Request) {
   await sendEmail({
     to: email,
     subject: "Reset your password",
-    html: `<p>Click <a href='${resetUrl}'>here</a> to reset your password. This link will expire in 1 hour.</p>`
+    html: `<p>Click <a href='${resetUrl}'>here</a> to reset your password. This link will expire in 1 hour.</p>`,
   });
 
-  return NextResponse.json({ message: "If that email exists, a reset link has been sent." });
-} 
+  return NextResponse.json({
+    message: "If that email exists, a reset link has been sent.",
+  });
+}

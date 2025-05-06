@@ -9,7 +9,9 @@ function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams.get("token") || "";
-  const [status, setStatus] = useState<"pending" | "success" | "error">("pending");
+  const [status, setStatus] = useState<"pending" | "success" | "error">(
+    "pending",
+  );
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -43,7 +45,12 @@ function VerifyEmailContent() {
           {status === "success" && (
             <>
               <p className="text-green-600">{message}</p>
-              <Button className="mt-4 w-full" onClick={() => router.push("/signin")}>Sign In</Button>
+              <Button
+                className="mt-4 w-full"
+                onClick={() => router.push("/signin")}
+              >
+                Sign In
+              </Button>
             </>
           )}
           {status === "error" && <p className="text-red-600">{message}</p>}
@@ -61,4 +68,4 @@ export default function VerifyEmail() {
       </Suspense>
     </div>
   );
-} 
+}

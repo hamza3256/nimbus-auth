@@ -15,7 +15,10 @@ export async function GET(req: Request) {
   });
 
   if (!verifyToken) {
-    return NextResponse.json({ message: "Invalid or expired token" }, { status: 400 });
+    return NextResponse.json(
+      { message: "Invalid or expired token" },
+      { status: 400 },
+    );
   }
 
   if (verifyToken.expires < new Date()) {
@@ -23,13 +26,20 @@ export async function GET(req: Request) {
   }
 
   const email = verifyToken.identifier;
-  const user = await db.query.users.findFirst({ where: eq(users.email, email) });
+  const user = await db.query.users.findFirst({
+    where: eq(users.email, email),
+  });
   if (!user) {
     return NextResponse.json({ message: "User not found" }, { status: 404 });
   }
 
-  await db.update(users).set({ emailVerified: new Date() }).where(eq(users.id, user.id));
-  await db.delete(verificationTokens).where(eq(verificationTokens.token, token));
+  await db
+    .update(users)
+    .set({ emailVerified: new Date() })
+    .where(eq(users.id, user.id));
+  await db
+    .delete(verificationTokens)
+    .where(eq(verificationTokens.token, token));
 
   return NextResponse.json({ message: "Email verified successfully" });
-} 
+}

@@ -46,7 +46,7 @@ function ResetPasswordContent() {
             type="password"
             placeholder="Enter new password"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
             disabled={isLoading}
           />
@@ -67,4 +67,4 @@ export default function ResetPassword() {
       </Suspense>
     </div>
   );
-} 
+}

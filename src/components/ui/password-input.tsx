@@ -2,7 +2,10 @@ import * as React from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 
-export function PasswordInput({ className, ...props }: React.ComponentProps<"input">) {
+export function PasswordInput({
+  className,
+  ...props
+}: React.ComponentProps<"input">) {
   const [show, setShow] = React.useState(false);
 
   return (
@@ -29,4 +32,4 @@ export function PasswordInput({ className, ...props }: React.ComponentProps<"inp
       </button>
     </div>
   );
-} 
+}

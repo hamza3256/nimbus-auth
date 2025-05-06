@@ -22,4 +22,4 @@ export default function SignOutButton() {
       {isPending ? "Signing out..." : "Sign Out"}
     </Button>
   );
-} 
+}

@@ -57,7 +57,9 @@ export default function SignIn() {
 
       if (result?.error) {
         if (result.error === "Please verify your email before signing in") {
-          toast.error("Please verify your email before signing in. Check your inbox for the verification link.");
+          toast.error(
+            "Please verify your email before signing in. Check your inbox for the verification link.",
+          );
         } else {
           toast.error(result.error);
         }
@@ -67,7 +69,9 @@ export default function SignIn() {
       router.push("/dashboard");
       router.refresh();
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "Something went wrong");
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -121,7 +125,10 @@ export default function SignIn() {
                 )}
               />
               <div className="flex justify-end mb-2">
-                <Link href="/forgot-password" className="text-xs text-primary hover:underline">
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-primary hover:underline"
+                >
                   Forgot Password?
                 </Link>
               </div>
@@ -142,4 +149,4 @@ export default function SignIn() {
       </Card>
     </div>
   );
-} 
+}

@@ -44,10 +44,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
-        run: pnpm install
-
-      - name: Install concurrently globally
-        run: pnpm add -g concurrently
+        run: pnpm install --frozen-lockfile
 
       - name: Lint, format and typecheck
         run: |
@@ -84,8 +81,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm install
-          pnpm add -D typescript@5.3.3 @types/react@19 @types/react-dom@19 @types/node@20
+          pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm run build
